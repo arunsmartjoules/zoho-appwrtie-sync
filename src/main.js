@@ -47,7 +47,23 @@ const zohoAppwriteSync = async () => {
     console.log("Error getting appwrite data", error);
   }
 };
-zohoAppwriteSync();
-app.listen(PORT, () => {
-  console.log("Server is running on PORT", PORT);
-});
+export default async () => {
+  try {
+    await zohoAppwriteSync();
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ execution: "success" }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ execution: "failed", error: error.message }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+  }
+};
