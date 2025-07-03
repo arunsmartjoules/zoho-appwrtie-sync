@@ -7,15 +7,15 @@ const app = express();
 app.use(express.json());
 config();
 
-const PORT = process.env.PORT;
-
 const DATABASE_ID = "sjpl_zoho";
 const COLLECTION_ID = "68653d1600092148a33c";
 
 const zohoAppwriteSync = async () => {
   try {
     const promise = await databases.listDocuments(DATABASE_ID, COLLECTION_ID);
-    const sync_data = promise.documents.map(async (data) => {
+    console.log(promise);
+
+    for (const data of promise.documents) {
       try {
         const payload = {
           data: {
@@ -29,21 +29,25 @@ const zohoAppwriteSync = async () => {
           data.scheduler_task_id,
           payload
         );
-        console.log("Updated data", response);
-        try {
-          const delete_promise = await databases.deleteDocument(
-            DATABASE_ID,
-            COLLECTION_ID,
-            data.$id
-          );
-          console.log("Appwrite data successfully deleted", delete_promise);
-        } catch (error) {
-          console.log("Error deleting document", error);
+        console.log("Updated data", JSON.stringify(response));
+        if (response.code === 3000) {
+          try {
+            const delete_promise = await databases.deleteDocument(
+              DATABASE_ID,
+              COLLECTION_ID,
+              data.$id
+            );
+            console.log("Appwrite data successfully deleted", delete_promise);
+          } catch (error) {
+            console.log("Error deleting document", error);
+          }
+        } else {
+          console.log("Cannot update data in zoho");
         }
       } catch (error) {
         console.log("Error adding data in zoho", error);
       }
-    });
+    }
   } catch (error) {
     console.log("Error getting appwrite data", error);
   }
