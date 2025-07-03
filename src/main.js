@@ -1,10 +1,9 @@
 import express from "express";
-import dotenv from "dotenv";
+import { config } from "dotenv";
 import { databases } from "./api/appWriteClient.js";
 import { updateRecord } from "./api/zoho.js";
 
-const app = express();
-dotenv.config();
+config();
 
 const PORT = process.env.PORT;
 

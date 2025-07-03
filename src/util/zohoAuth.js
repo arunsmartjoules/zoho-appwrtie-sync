@@ -1,6 +1,9 @@
 import axios from "axios";
 let cachedAccessToken = null;
 let tokenExpiryTime = 0;
+import { config } from "dotenv";
+
+config();
 
 export async function refreshAccessToken() {
   try {

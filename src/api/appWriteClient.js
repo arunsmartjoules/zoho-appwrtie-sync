@@ -1,7 +1,8 @@
 import { Client, Databases } from "node-appwrite";
-import dotenv from "dotenv";
-dotenv.config();
 
+import { config } from "dotenv";
+
+config();
 const client = new Client();
 
 client
