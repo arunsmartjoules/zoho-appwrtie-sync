@@ -3,6 +3,8 @@ import { config } from "dotenv";
 import { databases } from "./api/appWriteClient.js";
 import { updateRecord } from "./api/zoho.js";
 
+const app = express();
+app.use(express.json());
 config();
 
 const PORT = process.env.PORT;
